@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "publication")
-public class Publication {
+public class Publication implements Comparable<Publication> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,9 +39,6 @@ public class Publication {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE,
               org.hibernate.annotations.CascadeType.PERSIST})
     private List<Image> images;
-
-    public Publication() {
-    }
 
     public int getId() {
         return id;
@@ -89,5 +86,10 @@ public class Publication {
 
     public void setImages(List<Image> images) {
         this.images = images;
+    }
+
+    @Override
+    public int compareTo(Publication o) {
+        return createdAt.compareTo(o.getCreatedAt());
     }
 }
