@@ -1,7 +1,6 @@
 package by.ladz.gusakov.SocialMedialApp.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
 
 @Entity
