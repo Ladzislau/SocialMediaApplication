@@ -1,5 +1,6 @@
 package by.ladz.gusakov.SocialMedialApp.config;
 
+import by.ladz.gusakov.SocialMedialApp.security.CustomAuthenticationEntryPoint;
 import by.ladz.gusakov.SocialMedialApp.services.PersonDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,15 +26,18 @@ public class SecurityConfig {
 
     private final JWTFilter jwtFilter;
 
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
+
     @Autowired
-    public SecurityConfig(PersonDetailsService personDetailsService, JWTFilter jwtFilter) {
+    public SecurityConfig(PersonDetailsService personDetailsService, JWTFilter jwtFilter, CustomAuthenticationEntryPoint authenticationEntryPoint) {
         this.personDetailsService = personDetailsService;
         this.jwtFilter = jwtFilter;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+        return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login", "/error", "/auth/registration", "/publications",
@@ -44,11 +48,12 @@ public class SecurityConfig {
                 .logout(logout ->
                         logout.logoutUrl("/logout")
                                 .logoutSuccessUrl("/auth/login"))
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
