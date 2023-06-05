@@ -13,7 +13,7 @@ public class PublicationDTO {
     @Size(max = 50, message = "Максимальная длина заголовка публикации – 50 символов")
     private String title;
 
-    @Size(max = 1000, message = "Максимальная длина текста в публикации – 1000 символов")
+    @Size(max = 1024, message = "Максимальная длина текста в публикации – 1024 символа")
     private String content;
 
     private Date createdAt;
