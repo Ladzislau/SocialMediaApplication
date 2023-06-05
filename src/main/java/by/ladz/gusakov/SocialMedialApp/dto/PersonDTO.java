@@ -6,16 +6,17 @@ import jakarta.validation.constraints.Size;
 
 public class PersonDTO {
 
-    @NotEmpty(message = "Необходимо указать имя пользователя!")
-    @Size(min = 1, max = 20, message = "Длина имени должна составлять от 1 до 20 символов!")
+    @NotEmpty(message = "Необходимо указать имя пользователя")
+    @Size(min = 1, max = 20, message = "Имя пользователя должно содержать от 1 до 20 символов")
     private String username;
 
-    @NotEmpty(message = "Необходимо указать адрес электронной почты!")
-    @Email(message = "Некорректный адрес электронной почты!")
-    @Size(min= 1, max = 256, message = "Длина адреса электронной почты не может превышать 256 символов!")
+    @NotEmpty(message = "Необходимо указать адрес электронной почты")
+    @Email(message = "Некорректный адрес электронной почты")
+    @Size(max = 256, message = "Длина адреса электронной почты не может превышать 256 символов")
     private String email;
 
-    @NotEmpty(message = "Необходимо указать пароль!")
+    @NotEmpty(message = "Необходимо указать пароль")
+    @Size(min = 6, max = 20, message = "Пароль должен содержать от 6 до 20 символов")
     private String password;
 
     public String getUsername() {
