@@ -69,6 +69,14 @@ public class Person {
         this.password = password;
     }
 
+    public List<Publication> getPublications() {
+        return publications;
+    }
+
+    public void setPublications(List<Publication> publications) {
+        this.publications = publications;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
