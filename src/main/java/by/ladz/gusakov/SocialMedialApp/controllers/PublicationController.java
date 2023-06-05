@@ -1,21 +1,19 @@
 package by.ladz.gusakov.SocialMedialApp.controllers;
 
 import by.ladz.gusakov.SocialMedialApp.dto.PublicationDTO;
+import by.ladz.gusakov.SocialMedialApp.exceptions.*;
 import by.ladz.gusakov.SocialMedialApp.models.Person;
 import by.ladz.gusakov.SocialMedialApp.models.Publication;
 import by.ladz.gusakov.SocialMedialApp.services.PeopleService;
 import by.ladz.gusakov.SocialMedialApp.services.PublicationService;
 import by.ladz.gusakov.SocialMedialApp.util.*;
-import org.modelmapper.ModelMapper;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
