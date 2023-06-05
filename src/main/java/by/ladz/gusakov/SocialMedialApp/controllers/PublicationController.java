@@ -48,11 +48,13 @@ public class PublicationController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<PublicationDTO>> getUserPublications(@RequestParam("username") String username) throws PersonNotFoundException, CantLoadImageException {
+    public ResponseEntity<List<PublicationDTO>> getUserPublications(@RequestParam("creator") String username) throws PersonNotFoundException, CantLoadImageException {
         Optional<Person> creatorOptional = peopleService.findByUsername(username);
+
         if (creatorOptional.isEmpty()) {
             throw new PersonNotFoundException();
         }
+
         Person creator = creatorOptional.get();
         List<Publication> publications = publicationService.getAllPublicationsByCreator(creator);
         List<PublicationDTO> publicationDTOS = new ArrayList<>();
