@@ -24,7 +24,7 @@ public class Publication implements Comparable<Publication> {
     private String title;
 
     @Column(name = "content")
-    @Size(max = 1000, message = "Максимальная длина текста в публикации – 1000 символов")
+    @Size(max = 1024, message = "Максимальная длина текста в публикации – 1024 символов")
     private String content;
 
     @Column(name = "created_at")
