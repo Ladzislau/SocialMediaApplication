@@ -28,13 +28,13 @@ public class PublicationController {
 
     private final PeopleService peopleService;
 
-    private final ImageUtils imageUtils;
+    private final PublicationMapper publicationMapper;
 
     @Autowired
-    public PublicationController(PublicationService publicationService, PeopleService peopleService, ImageUtils imageUtils) {
+    public PublicationController(PublicationService publicationService, PeopleService peopleService, PublicationMapper publicationMapper) {
         this.publicationService = publicationService;
         this.peopleService = peopleService;
-        this.imageUtils = imageUtils;
+        this.publicationMapper = publicationMapper;
     }
 
     @GetMapping("/{id}")
