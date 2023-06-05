@@ -93,11 +93,12 @@ public class PublicationService {
         Person currentUser = peopleService.getCurrentUser();
 
         if (publicationOpt.isEmpty()) {
-            throw new PublicationNotFoundedException();
+            throw new PublicationNotFoundedException("Публикация не найдена!");
         }
         Publication publication = publicationOpt.get();
         if (!publication.getCreator().equals(currentUser)) {
-            throw new UnauthorizedPublicationModificationException();
+            throw new UnauthorizedPublicationModificationException("Невозможно произвести операцию с публикацией! " +
+                    "Вы не являетесь её создателем");
         }
     }
 
