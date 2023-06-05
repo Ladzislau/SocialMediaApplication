@@ -52,7 +52,8 @@ public class PublicationController {
         Optional<Person> creatorOptional = peopleService.findByUsername(username);
 
         if (creatorOptional.isEmpty()) {
-            throw new PersonNotFoundException();
+            throw new PersonNotFoundException("Невозможно загрузить публикации! Пользователя "
+                    + username + " не существует");
         }
 
         Person creator = creatorOptional.get();
