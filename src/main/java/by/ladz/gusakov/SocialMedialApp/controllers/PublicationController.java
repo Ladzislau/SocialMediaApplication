@@ -40,10 +40,12 @@ public class PublicationController {
     @GetMapping("/{id}")
     public ResponseEntity<PublicationDTO> getPublication(@PathVariable("id") int id) throws PublicationNotFoundedException, CantLoadImageException {
         Optional<Publication> foundedPublication = publicationService.getById(id);
+
         if (foundedPublication.isEmpty()) {
-            throw new PublicationNotFoundedException();
+            throw new PublicationNotFoundedException("Публикация не найдена!");
         }
-        PublicationDTO publication = convertToPublicationDTO(foundedPublication.get());
+
+        PublicationDTO publication = publicationMapper.mapToPublicationDTO(foundedPublication.get());
         return ResponseEntity.ok(publication);
     }
 
@@ -58,11 +60,8 @@ public class PublicationController {
 
         Person creator = creatorOptional.get();
         List<Publication> publications = publicationService.getAllPublicationsByCreator(creator);
-        List<PublicationDTO> publicationDTOS = new ArrayList<>();
-        for (Publication publication : publications) {
-            PublicationDTO publicationDTO = convertToPublicationDTO(publication);
-            publicationDTOS.add(publicationDTO);
-        }
+        List<PublicationDTO> publicationDTOS = publicationMapper.mapToPublicationDTOList(publications);
+
         return ResponseEntity.ok(publicationDTOS);
     }
 
@@ -77,6 +76,7 @@ public class PublicationController {
 
         Publication publication = publicationMapper.mapToPublication(publicationDTO);
         publicationService.save(publication, imagesForPost);
+
         return ResponseEntity.ok(Map.of("message", "Публикация успешно создана!"));
     }
 
@@ -101,66 +101,6 @@ public class PublicationController {
         publicationService.deleteById(id);
 
         return ResponseEntity.ok(Map.of("message", "Публикация успешно удалена!"));
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<PublicationErrorResponse> handleException(UnauthorizedPublicationModificationException e) {
-        PublicationErrorResponse response = new PublicationErrorResponse(
-                "Несанкционированное изменение публикации: текущий пользователь не является её создателем",
-                System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<PublicationErrorResponse> handleException(PublicationNotFoundedException e) {
-        PublicationErrorResponse errorResponse = new PublicationErrorResponse("Данная публикация не найдена",
-                System.currentTimeMillis());
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<PublicationErrorResponse> handleException(CantLoadImageException e) {
-        PublicationErrorResponse errorResponse = new PublicationErrorResponse(
-                "Изображения из публикации не могут быть загружены",
-                System.currentTimeMillis());
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<PersonErrorResponse> handleException(PersonNotFoundException e) {
-        PersonErrorResponse response = new PersonErrorResponse("Данный пользователь не найден",
-                System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<PersonErrorResponse> handleException(PersonNotAuthenticatedException e) {
-        PersonErrorResponse response = new PersonErrorResponse(
-                "Для создания публикации вы должны быть авторизованы",
-                System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-    }
-
-
-    private PublicationDTO convertToPublicationDTO(Publication publication) throws CantLoadImageException {
-        try {
-            PublicationDTO publicationDTO = new PublicationDTO();
-            List<String> base64images = imageUtils.loadImages(publication.getImages());
-            publicationDTO.setTitle(publication.getTitle());
-            publicationDTO.setContent(publication.getContent());
-            publicationDTO.setCreatedAt(publication.getCreatedAt());
-            publicationDTO.setPublicationImages(base64images);
-            return publicationDTO;
-        } catch (IOException e) {
-            throw new CantLoadImageException();
-        }
-    }
-
-    private Publication convertToPublication(PublicationDTO publicationDTO) {
-        Publication publication = new Publication();
-        publication.setTitle(publicationDTO.getTitle());
-        publication.setContent(publicationDTO.getContent());
-        return publication;
     }
 
 }
