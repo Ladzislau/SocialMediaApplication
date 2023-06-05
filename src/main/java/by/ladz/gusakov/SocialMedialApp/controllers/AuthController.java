@@ -2,12 +2,12 @@ package by.ladz.gusakov.SocialMedialApp.controllers;
 
 import by.ladz.gusakov.SocialMedialApp.dto.AuthenticationDTO;
 import by.ladz.gusakov.SocialMedialApp.dto.PersonDTO;
+import by.ladz.gusakov.SocialMedialApp.exceptions.ExceptionUtils;
 import by.ladz.gusakov.SocialMedialApp.models.Person;
 import by.ladz.gusakov.SocialMedialApp.security.JWTUtil;
 import by.ladz.gusakov.SocialMedialApp.services.PeopleService;
 import by.ladz.gusakov.SocialMedialApp.services.RegistrationService;
-import by.ladz.gusakov.SocialMedialApp.util.PersonErrorResponse;
-import by.ladz.gusakov.SocialMedialApp.util.PersonNotCreatedException;
+import by.ladz.gusakov.SocialMedialApp.exceptions.PersonNotCreatedException;
 import by.ladz.gusakov.SocialMedialApp.util.PersonValidator;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -18,10 +18,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -50,7 +48,22 @@ public class AuthController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/registration")
+    public ResponseEntity<Map<String, String>> performRegistration(@RequestBody @Valid PersonDTO personDTO,
+                                                                   BindingResult bindingResult) throws PersonNotCreatedException {
+        Person person = convertToPerson(personDTO);
+        personValidator.validate(person, bindingResult);
+        String errorMessage = ExceptionUtils.generateErrorMessage(bindingResult);
+        if(errorMessage != null){
+            throw new PersonNotCreatedException(errorMessage);
+        }
+        registrationService.register(person);
+
+        String token = jwtUtil.generateToken(person.getUsername());
+        return ResponseEntity.ok(Map.of("jwt-token", token));
+    }
+
+    @PatchMapping("/login")
     public ResponseEntity<Map<String, String>> performLogin(@RequestBody AuthenticationDTO authenticationDTO){
         UsernamePasswordAuthenticationToken authInputToken = new UsernamePasswordAuthenticationToken(
                 authenticationDTO.getUsername(), authenticationDTO.getPassword());
@@ -63,36 +76,6 @@ public class AuthController {
         Person person = peopleService.findByUsernameOrEmail(authenticationDTO.getUsername()).get();
         String token = jwtUtil.generateToken(person.getUsername());
         return ResponseEntity.ok(Map.of("jwt-token", token));
-    }
-
-    @PostMapping("/registration")
-    public ResponseEntity<Map<String, String>> performRegistration(@RequestBody @Valid PersonDTO personDTO,
-                                                                   BindingResult bindingResult) {
-        Person person = convertToPerson(personDTO);
-        personValidator.validate(person, bindingResult);
-        if(bindingResult.hasErrors()){
-            StringBuilder errorMessage = new StringBuilder();
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError error :
-                    errors) {
-                errorMessage.append(error.getField())
-                        .append(" – ").append(error.getDefaultMessage())
-                        .append("; ");
-            }
-            throw new PersonNotCreatedException(errorMessage.toString());
-        }
-        registrationService.register(person);
-
-        String token = jwtUtil.generateToken(person.getUsername());
-        return ResponseEntity.ok(Map.of("jwt-token", token));
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<PersonErrorResponse> handleException(PersonNotCreatedException e){
-        PersonErrorResponse response = new PersonErrorResponse(
-                e.getMessage(),
-                System.currentTimeMillis());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     private Person convertToPerson(PersonDTO personDTO){
