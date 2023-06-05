@@ -1,6 +1,5 @@
 package by.ladz.gusakov.SocialMedialApp.services;
 
-import by.ladz.gusakov.SocialMedialApp.models.Image;
 import by.ladz.gusakov.SocialMedialApp.models.Publication;
 import by.ladz.gusakov.SocialMedialApp.repositories.ImageRepository;
 import jakarta.transaction.Transactional;
@@ -17,10 +16,6 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    @Transactional
-    public void save(Image image){
-        imageRepository.save(image);
-    }
 
     @Transactional
     public void deleteByPublication(Publication publication){
