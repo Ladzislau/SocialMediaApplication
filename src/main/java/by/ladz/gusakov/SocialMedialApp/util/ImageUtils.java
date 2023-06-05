@@ -68,14 +68,17 @@ public class ImageUtils {
     }
 
     public List<String> loadImages(List<Image> imageList) throws IOException {
-        List<String> imagesToSend = new ArrayList<>();
-        for (Image image : imageList) {
-            Path path = Path.of(image.getPathToImage());
-            byte[] bytes = Files.readAllBytes(path);
-            String base64 = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(bytes);
-            imagesToSend.add(base64);
+        if(!imageList.isEmpty()) {
+            List<String> imagesToSend = new ArrayList<>();
+            for (Image image : imageList) {
+                Path path = Path.of(image.getPathToImage());
+                byte[] bytes = Files.readAllBytes(path);
+                String base64 = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(bytes);
+                imagesToSend.add(base64);
+            }
+            return imagesToSend;
         }
-        return imagesToSend;
+        return null;
     }
 
 }
