@@ -3,7 +3,7 @@ package by.ladz.gusakov.SocialMedialApp.services;
 import by.ladz.gusakov.SocialMedialApp.models.Person;
 import by.ladz.gusakov.SocialMedialApp.repositories.PeopleRepository;
 import by.ladz.gusakov.SocialMedialApp.security.PersonDetails;
-import by.ladz.gusakov.SocialMedialApp.util.PersonNotAuthenticatedException;
+import by.ladz.gusakov.SocialMedialApp.exceptions.PersonNotAuthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +42,7 @@ public class PeopleService {
         PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
         Optional<Person> creatorOptional = findByUsername(personDetails.getUsername());
         if(creatorOptional.isEmpty()){
-            throw new PersonNotAuthenticatedException();
+            throw new PersonNotAuthenticatedException("Ошибка! Пользователь не аутентифицирован");
         }
         return creatorOptional.get();
     }
