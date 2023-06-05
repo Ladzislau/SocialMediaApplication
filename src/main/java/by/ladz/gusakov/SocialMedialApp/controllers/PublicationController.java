@@ -67,21 +67,30 @@ public class PublicationController {
     }
 
     @PostMapping()
-    public ResponseEntity<Map<String, String>> createPublication(@ModelAttribute PublicationDTO publicationDTO,
-                                                        @RequestParam(value = "imagesForPost", required = false) List<MultipartFile> imagesForPost)
-            throws PersonNotAuthenticatedException {
+    public ResponseEntity<Map<String, String>> createPublication(@ModelAttribute @Valid PublicationDTO publicationDTO, BindingResult bindingResult,
+                                                                 @RequestParam(value = "imagesForPost", required = false) List<MultipartFile> imagesForPost)
+            throws PersonNotAuthenticatedException, IncorrectPublicationException {
 
-        Publication publication = convertToPublication(publicationDTO);
+        String errorMessage = ExceptionUtils.generateErrorMessage(bindingResult);
+        if(errorMessage != null)
+            throw new IncorrectPublicationException(errorMessage);
+
+        Publication publication = publicationMapper.mapToPublication(publicationDTO);
         publicationService.save(publication, imagesForPost);
         return ResponseEntity.ok(Map.of("message", "Публикация успешно создана!"));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Map<String, String>> updatePublication(@PathVariable("id") int id, @ModelAttribute PublicationDTO publicationDTO)
-            throws UnauthorizedPublicationModificationException, PublicationNotFoundedException, PersonNotAuthenticatedException {
+    public ResponseEntity<Map<String, String>> updatePublication(@PathVariable("id") int id, @RequestBody @Valid PublicationDTO publicationDTO, BindingResult bindingResult)
+            throws UnauthorizedPublicationModificationException, PublicationNotFoundedException, PersonNotAuthenticatedException, IncorrectPublicationException {
 
-        Publication updatedPublication = convertToPublication(publicationDTO);
+        String errorMessage = ExceptionUtils.generateErrorMessage(bindingResult);
+        if(errorMessage != null)
+            throw new IncorrectPublicationException(errorMessage);
+
+        Publication updatedPublication = publicationMapper.mapToPublication(publicationDTO);
         publicationService.update(id, updatedPublication);
+
         return ResponseEntity.ok(Map.of("message", "Публикация успешно обновлена!"));
     }
 
@@ -90,6 +99,7 @@ public class PublicationController {
             PublicationNotFoundedException, PersonNotAuthenticatedException {
 
         publicationService.deleteById(id);
+
         return ResponseEntity.ok(Map.of("message", "Публикация успешно удалена!"));
     }
 
