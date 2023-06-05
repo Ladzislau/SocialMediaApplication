@@ -16,6 +16,8 @@ public class PublicationDTO {
     @Size(max = 1024, message = "Максимальная длина текста в публикации – 1024 символа")
     private String content;
 
+    private String creatorName;
+
     private Date createdAt;
 
     private List<String> publicationImages;
@@ -53,5 +55,13 @@ public class PublicationDTO {
 
     public List<String> getPublicationImages() {
         return publicationImages;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 }
