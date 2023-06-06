@@ -11,12 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/following")
+@RequestMapping("/api/v1/following")
 public class RelationshipController {
 
     private final FriendRequestService friendRequestService;
@@ -26,26 +25,6 @@ public class RelationshipController {
     public RelationshipController(FriendRequestService friendRequestService, PeopleService peopleService) {
         this.friendRequestService = friendRequestService;
         this.peopleService = peopleService;
-    }
-
-    @GetMapping("/followers")
-    public ResponseEntity<List<Person>> getFollowers(@RequestParam("username") String username) throws PersonNotFoundException, FollowingException {
-        Optional<Person> person = peopleService.findByUsername(username);
-        if (person.isEmpty()) {
-            throw new PersonNotFoundException("Пользователя с данным именем не существует!");
-        }
-        List<Person> followers = friendRequestService.getPersonFollowers(person.get());
-        return ResponseEntity.ok(followers);
-    }
-
-    @GetMapping("/friends")
-    public ResponseEntity<List<Person>> getFriends(@RequestParam("username") String username) throws PersonNotFoundException, FollowingException {
-        Optional<Person> person = peopleService.findByUsername(username);
-        if (person.isEmpty()) {
-            throw new PersonNotFoundException("Пользователя с данным именем не существует!");
-        }
-        List<Person> friends = friendRequestService.getPersonFriends(person.get());
-        return ResponseEntity.ok(friends);
     }
 
     @PostMapping("/follow")
@@ -119,6 +98,5 @@ public class RelationshipController {
         return ResponseEntity.ok(Map.of("message",
                 "Вы отклонили запрос пользователя " + relationshipDTO.getUsername()));
     }
-
-
 }
+

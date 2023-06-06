@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/publications")
+@RequestMapping("/api/v1/publications")
 public class PublicationController {
 
     private final PublicationService publicationService;
@@ -48,7 +48,10 @@ public class PublicationController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<PublicationDTO>> getUserPublications(@RequestParam("creator") String username) throws PersonNotFoundException, CantLoadImageException {
+    public ResponseEntity<List<PublicationDTO>> getUserPublications(
+            @RequestParam("username") String username)
+            throws PersonNotFoundException, CantLoadImageException {
+
         Optional<Person> creatorOptional = peopleService.findByUsername(username);
 
         if (creatorOptional.isEmpty()) {

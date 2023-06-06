@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/news")
+@RequestMapping("/api/v1/news")
 public class NewsController {
 
     private final NewsFeedService newsFeedService;
@@ -28,9 +28,12 @@ public class NewsController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<PublicationDTO>> index(@RequestParam(value = "page", required = false) Integer page,
-                                                      @RequestParam(value = "publicationsPerPage", required = false) Integer publicationsPerPage,
-                                                      @RequestParam(value = "sortByCreationTime", required = false) Boolean sortByCreationTime)
+    public ResponseEntity<List<PublicationDTO>> index(
+            @RequestParam(value = "page", required = false) Integer page,
+
+            @RequestParam(value = "publicationsPerPage", required = false) Integer publicationsPerPage,
+
+            @RequestParam(value = "sortByCreationTime", required = false) Boolean sortByCreationTime)
             throws PersonNotAuthenticatedException, CantLoadImageException, IncorrectPageParametersException {
 
         List<Publication> news = newsFeedService.generateNewsFeedForCurrentUser(page, publicationsPerPage, sortByCreationTime);

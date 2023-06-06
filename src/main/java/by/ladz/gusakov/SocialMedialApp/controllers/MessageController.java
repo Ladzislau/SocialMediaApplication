@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/messages")
+@RequestMapping("/api/v1/messages")
 public class MessageController {
 
     private final UserMessageService userMessageService;
@@ -36,7 +36,9 @@ public class MessageController {
     }
 
     @GetMapping("/chat")
-    public ResponseEntity<Chat> getChat(@RequestParam("withUser") String username) throws PersonNotFoundException, PersonNotAuthenticatedException, ChatNotFoundedException {
+    public ResponseEntity<Chat> getChat(@RequestParam("withUser") String username)
+            throws PersonNotFoundException, PersonNotAuthenticatedException, ChatNotFoundedException {
+
         Optional<Person> person = peopleService.findByUsername(username);
 
         if(person.isEmpty())
@@ -48,7 +50,9 @@ public class MessageController {
     }
 
     @PostMapping()
-    public ResponseEntity<Map<String, String>> sendMessage(@RequestBody @Valid UserMessageDTO userMessageDTO, BindingResult bindingResult)
+    public ResponseEntity<Map<String, String>> sendMessage(
+            @RequestBody @Valid UserMessageDTO userMessageDTO,
+            BindingResult bindingResult)
             throws PersonNotAuthenticatedException, NotFriendException, PersonNotFoundException, MessageException {
         String errorMessage = ExceptionUtils.generateErrorMessage(bindingResult);
         if(errorMessage != null){
