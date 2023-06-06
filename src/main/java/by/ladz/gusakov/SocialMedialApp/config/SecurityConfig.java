@@ -40,8 +40,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/error", "/auth/registration", "/publications",
-                                "/publications/{id}").permitAll()
+                        .requestMatchers("/api/v1/auth/login", "/api/v1/error", "/api/v1/auth/registration", "/api/v1/publications",
+                                "/api/v1/publications/{id}", "/api/v1/api/v3/api-docs/", "/swagger-ui").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/auth/login"))

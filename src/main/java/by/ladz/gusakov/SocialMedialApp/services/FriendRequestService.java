@@ -111,34 +111,6 @@ public class FriendRequestService {
         followingRepository.save(followerFollowing);
     }
 
-    public List<Person> getPersonFollowers(Person person) throws FollowingException {
-        Optional<List<Following>> personFollowersOpt = followingRepository.findByFollowee(person);
-        if(personFollowersOpt.isEmpty()){
-            throw new FollowingException("У пользователя " + person.getUsername() + " нет ни одного подписчика");
-        }
-        List<Following> personFollowers = personFollowersOpt.get();
-        List<Person> followerList = new ArrayList<>();
-        for (Following follower
-                : personFollowers) {
-            followerList.add(follower.getPerson());
-        }
-        return followerList;
-    }
-
-    public List<Person> getPersonFriends(Person person) throws FollowingException {
-        Optional<List<Friendship>> personFriendsOpt = friendshipRepository.findByFriend(person);
-        if(personFriendsOpt.isEmpty()){
-            throw new FollowingException("Список друзей пользователя " + person.getUsername() + " пуст");
-        }
-        List<Friendship> personFriends = personFriendsOpt.get();
-        List<Person> friendList = new ArrayList<>();
-        for (Friendship friend
-                : personFriends) {
-            friendList.add(friend.getPerson());
-        }
-        return friendList;
-    }
-
     public List<Friendship> findFriendship(Person person1, Person person2) {
         List<Friendship> friendshipList = new ArrayList<>();
 
