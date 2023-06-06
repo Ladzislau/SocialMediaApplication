@@ -8,14 +8,13 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class SocialMedialAppApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SocialMedialAppApplication.class, args);
-	}
 
-	@Bean
-	public ModelMapper modelMapper(){
-		return new ModelMapper();
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SocialMedialAppApplication.class, args);
+    }
 
-
+    @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
+    }
 }
