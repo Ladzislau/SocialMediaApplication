@@ -1,0 +1,589 @@
+openapi: 3.0.0
+info:
+  title: Социальная медиаплатформа OpenAPI спецификация
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1/
+    description: Dev server
+paths:
+  /auth/registration:
+    post:
+      summary: Регистрация пользователя
+      description: Для регистрации пользователь должен указать уникальный username, уникальный адрес электронной почты и пароль
+      operationId: performRegistration
+      tags:
+        - Аутентификация
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonDTO'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwt-token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyIGRldGFpbHMiLCJ1c2VybmFtZSI6InZvbHZvIiwiaWF0IjoxNjg1OTAyNzU1LCJpc3MiOiJzcHJpbmctcmVzdC1hcHAiLCJleHAiOjE2ODg0OTQ3NTV9.2Cp5hd_6oEGUZJlIVEs52F-rgs31F45DO772GYMxqmY
+        '400':
+          description: Не удалось зарегистрироваться
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        
+  /auth/login:
+    patch:
+      summary: Вход пользователя в аккаунт
+      description: Для того, чтобы войти в аккаунт пользователь должен ввести свой username или email и корректный пароль
+      operationId: performLogin
+      tags:
+        - Аутентификация
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationDTO'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwt-token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyIGRldGFpbHMiLCJ1c2VybmFtZSI6InZvbHZvIiwiaWF0IjoxNjg1OTAyNzU1LCJpc3MiOiJzcHJpbmctcmVzdC1hcHAiLCJleHAiOjE2ODg0OTQ3NTV9.2Cp5hd_6oEGUZJlIVEs52F-rgs31F45DO772GYMxqmY
+        '401':
+          description: Не удалось войти в аккаунт
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Неправильное имя или пароль"
+          
+  /messages:
+    post:
+      summary: Отправить сообщение
+      operationId: sendMessage
+      tags:
+        - Сообщения
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMessageDTO'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Сообщение успешно отправлено"
+        '400':
+          description: Сообщение не прошло валидацию
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'            
+        '404':
+          description: Получатель не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        
+  /messages/chat:
+    get:
+      summary: Получить чат с пользователем
+      description: Получение списка всех сообщей между текущим аутентифицированным пользователем и указанным пользователем
+      operationId: getChat
+      tags:
+        - Сообщения
+      parameters:
+        - name: withUser
+          in: query
+          description: Имя пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        '404':
+          description: Получатель или чат не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /news:
+    get:
+      summary: Получить ленту активности
+      description: Получение ленты активности для аутентифицированного пользователя, основанной на его подписках. Ленту можно отсортировать по времени публикации, если данный параметр не задан или равен false посты будут показаны в размешанном порядке
+      operationId: index
+      tags:
+        - Новости
+      parameters:
+        - name: page
+          in: query
+          description: Номер страницы
+          schema:
+            type: integer
+        - name: publicationsPerPage
+          in: query
+          description: Количество публикаций на странице
+          schema:
+            type: integer
+        - name: sortByCreationTime
+          in: query
+          description: Сортировать по времени создания
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicationDTO'
+        '400':
+          description: Неправильно заданы параметры пагинации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Невозможно загрузить фото для публикации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /publications:
+    get:
+      summary: Получить публикацию по имени пользователя
+      operationId: getUserPublications
+      tags:
+        - Публикации
+      parameters:
+        - name: username
+          in: path
+          description: Имя пользователя
+          required: true
+          schema:
+            type: string
+      responses:
+        '200': 
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicationDTO'
+        '404':
+          description: Пользователя не существует / Невозможно загрузить фото для публикации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Создать новую публикацию
+      operationId: createPublication
+      tags:
+        - Публикации
+      parameters:
+        - name: imagesForPost
+          in: formData
+          description: Изображения для публикации
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicationDTOwi'
+      responses:
+        '201':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Публикация успешно создана!"
+        '400':
+          description: Публикация не прошла валидацию
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /publications/{id}:
+    get:
+      summary: Получить публикацию по идентификатору
+      operationId: getPublication
+      tags:
+        - Публикации
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор публикации
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200': 
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicationDTO'
+        '404':
+          description: Невозможно загрузить фото для публикации
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Обновить публикацию по идентификатору
+      operationId: updatePublication
+      tags:
+        - Публикации
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор публикации
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200': 
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Публикация успешно обновлена!"
+        '400':
+          description: Публикация не прошла валидацию
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Публикация не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Удалить публикацию по идентификатору
+      operationId: deletePublication
+      tags:
+        - Публикации
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор публикации
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200': 
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Публикация успешно удалена!"
+        '404':
+          description: Публикация не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+ 
+  /following/follow:
+    post:
+      summary: Подписаться на пользователя
+      description: При подписке на пользователя он получит запрос в друзья, который он сможет отклонить или принять. Если вы подписываетесь на польщователя, который был вашим подписчиком, вы становитесь друзьями.
+      operationId: follow
+      tags:
+        - Подписки
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelationshipDTO'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Вы успешно подписались на пользователя"
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Попытка подписки на самого себя / Повторная подписка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /following/unfollow:
+    delete:
+      summary: Отписаться от пользователя
+      description: Отписка от польщователя. Если пользователь был вашим другом, то при отписке вы перестаете быть друзьями, а его заявка приобретает статус /"отклонена/"
+      operationId: unfollow
+      tags:
+        - Подписки
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelationshipDTO'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Вы успешно отписались от пользователя"
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Попытка отписки от человека, на которого не подписан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /following/accept_request:
+    patch:
+      summary: Принять запрос на добавление в друзья
+      operationId: acceptRequest
+      tags:
+        - Друзья
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelationshipDTO'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Вы приняли запрос в друзья!"
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Невозможное добавление в друзья
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /following/decline_request:
+    patch:
+      summary: Отклонить запрос на добавление в друзья
+      operationId: declineRequest
+      tags:
+        - Друзья
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelationshipDTO'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Вы отклонили запрос в друзья!"
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Попытка отклонения несуществующего запроса
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    PersonDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          example: your_username
+        email:
+          type: string
+          example: your_email@gmail.com
+        password:
+          type: string
+          example: 1234qwerty
+    AuthenticationDTO:
+      type: object
+      properties:
+        email:
+          type: string
+          example: email_or_username
+        password:
+          type: string
+          example: 1234qwerty
+    Chat:
+      type: object
+      properties:
+        firstChatMemberName:
+          type: string
+          example: John
+        secondChatMemberName:
+          type: string
+          example: Michael
+        messages:
+          type: array
+          items:
+            type: object
+            example: "2023-06-01T10:30:00Z - message example"
+    UserMessageDTO:
+      type: object
+      properties:
+        recipientName:
+          type: string
+          example: username
+        message:
+          type: string
+          example: hello
+    MessageDTO:
+      type: object
+      properties:
+        sender:
+          type: string
+        recipient:
+          type: string
+        message:
+          type: string
+    PublicationDTO:
+      type: object
+      properties:
+        title:
+          type: string
+          example: title_example
+        content:
+          type: string
+          example: publication text
+        author:
+          type: string
+          example: username
+        creationTime:
+          type: object
+          example: 2023-06-01T10:30:00Z
+        publicationImages:
+          type: array
+          items:
+            type: string
+            example:
+            - data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH1ggDCwMADQ4NnwAAAFVJREFUGJWNkMEJADEIBEcbSDkXUnfSgnBVeZ8LSAjiwjyEQXSFEIcHGP9oAi+H0Bymgx9MhxbFdZE2a0s9kTZdw01ZhhYkABSwgmf1Z6r1SNyfFf4BZ+ZUExcNUQUAAAAASUVORK5CYII=
+            - data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH1ggDCwMADQ4NnwAAAFVJREFUGJWNkMEJADEIBEcbSDkXUnfSgnBVeZ8LSAjiwjyEQXSFEIcHGP9oAi+H0Bymgx9MhxbFdZE2a0s9kTZdw01ZhhYkABSwgmf1Z6r1SNyfFf4BZ+ZUExcNUQUAAAAASUVORK5CYII=
+    PublicationDTOwi:
+      type: object
+      properties:
+        title:
+          type: string
+          example: title_example
+        content:
+          type: string
+          example: publication text
+    RelationshipDTO:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          maxLength: 20
+          example: "john"
+      required:
+        - username
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Ошибка! Вы не можете ..."
+        timestamp:
+          type: string
+          format: date-time
+          example: "2023-06-05T19:56:11.631+00:00"
+
+
+    
+ 
