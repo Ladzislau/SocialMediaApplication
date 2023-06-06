@@ -42,10 +42,3 @@ To get started with My Project, follow these steps:
 3. Build and run the project.
 4. Explore the API documentation using the provided OpenAPI YAML file.
 
-## Contributing
-
-If you would like to contribute to My Project, please follow the guidelines in [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
