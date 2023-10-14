@@ -1,4 +1,4 @@
-package by.ladz.gusakov.SocialMedialApp.services;
+package by.ladz.gusakov.SocialMedialApp.service;
 
 import by.ladz.gusakov.SocialMedialApp.model.Person;
 import by.ladz.gusakov.SocialMedialApp.repository.PeopleRepository;
