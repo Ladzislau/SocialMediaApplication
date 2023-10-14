@@ -1,9 +1,9 @@
 package by.ladz.gusakov.SocialMedialApp.services;
 
-import by.ladz.gusakov.SocialMedialApp.models.Person;
-import by.ladz.gusakov.SocialMedialApp.repositories.PeopleRepository;
+import by.ladz.gusakov.SocialMedialApp.model.Person;
+import by.ladz.gusakov.SocialMedialApp.repository.PeopleRepository;
 import by.ladz.gusakov.SocialMedialApp.security.PersonDetails;
-import by.ladz.gusakov.SocialMedialApp.exceptions.PersonNotAuthenticatedException;
+import by.ladz.gusakov.SocialMedialApp.exception.PersonNotAuthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,7 +1,7 @@
 package by.ladz.gusakov.SocialMedialApp.config;
 
-import by.ladz.gusakov.SocialMedialApp.security.JWTUtil;
-import by.ladz.gusakov.SocialMedialApp.services.PersonDetailsService;
+import by.ladz.gusakov.SocialMedialApp.util.JWTUtil;
+import by.ladz.gusakov.SocialMedialApp.service.PersonDetailsService;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

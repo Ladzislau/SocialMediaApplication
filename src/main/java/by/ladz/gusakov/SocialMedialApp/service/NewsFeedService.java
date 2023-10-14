@@ -1,11 +1,11 @@
 package by.ladz.gusakov.SocialMedialApp.service;
 
-import by.ladz.gusakov.SocialMedialApp.exceptions.IncorrectPageParametersException;
-import by.ladz.gusakov.SocialMedialApp.models.Following;
-import by.ladz.gusakov.SocialMedialApp.models.NewsFeed;
-import by.ladz.gusakov.SocialMedialApp.models.Person;
-import by.ladz.gusakov.SocialMedialApp.models.Publication;
-import by.ladz.gusakov.SocialMedialApp.exceptions.PersonNotAuthenticatedException;
+import by.ladz.gusakov.SocialMedialApp.exception.IncorrectPageParametersException;
+import by.ladz.gusakov.SocialMedialApp.model.Following;
+import by.ladz.gusakov.SocialMedialApp.model.NewsFeed;
+import by.ladz.gusakov.SocialMedialApp.model.Person;
+import by.ladz.gusakov.SocialMedialApp.model.Publication;
+import by.ladz.gusakov.SocialMedialApp.exception.PersonNotAuthenticatedException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.hibernate.Session;

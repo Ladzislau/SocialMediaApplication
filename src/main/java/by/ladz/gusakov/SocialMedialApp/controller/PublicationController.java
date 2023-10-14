@@ -1,11 +1,11 @@
 package by.ladz.gusakov.SocialMedialApp.controller;
 
 import by.ladz.gusakov.SocialMedialApp.dto.PublicationDTO;
-import by.ladz.gusakov.SocialMedialApp.exceptions.*;
-import by.ladz.gusakov.SocialMedialApp.models.Person;
-import by.ladz.gusakov.SocialMedialApp.models.Publication;
-import by.ladz.gusakov.SocialMedialApp.services.PeopleService;
-import by.ladz.gusakov.SocialMedialApp.services.PublicationService;
+import by.ladz.gusakov.SocialMedialApp.exception.*;
+import by.ladz.gusakov.SocialMedialApp.model.Person;
+import by.ladz.gusakov.SocialMedialApp.model.Publication;
+import by.ladz.gusakov.SocialMedialApp.service.PeopleService;
+import by.ladz.gusakov.SocialMedialApp.service.PublicationService;
 import by.ladz.gusakov.SocialMedialApp.util.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +71,7 @@ public class PublicationController {
                                                                  @RequestParam(value = "imagesForPost", required = false) List<MultipartFile> imagesForPost)
             throws PersonNotAuthenticatedException, IncorrectPublicationException {
 
-        String errorMessage = ExceptionUtils.generateErrorMessage(bindingResult);
+        String errorMessage = ExceptionUtil.generateErrorMessage(bindingResult);
         if(errorMessage != null)
             throw new IncorrectPublicationException(errorMessage);
 
@@ -85,7 +85,7 @@ public class PublicationController {
     public ResponseEntity<Map<String, String>> updatePublication(@PathVariable("id") int id, @RequestBody @Valid PublicationDTO publicationDTO, BindingResult bindingResult)
             throws UnauthorizedPublicationModificationException, PublicationNotFoundedException, PersonNotAuthenticatedException, IncorrectPublicationException {
 
-        String errorMessage = ExceptionUtils.generateErrorMessage(bindingResult);
+        String errorMessage = ExceptionUtil.generateErrorMessage(bindingResult);
         if(errorMessage != null)
             throw new IncorrectPublicationException(errorMessage);
 
