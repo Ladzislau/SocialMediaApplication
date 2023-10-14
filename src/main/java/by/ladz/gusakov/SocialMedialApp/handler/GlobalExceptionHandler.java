@@ -1,5 +1,6 @@
-package by.ladz.gusakov.SocialMedialApp.exceptions;
+package by.ladz.gusakov.SocialMedialApp.handler;
 
+import by.ladz.gusakov.SocialMedialApp.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
