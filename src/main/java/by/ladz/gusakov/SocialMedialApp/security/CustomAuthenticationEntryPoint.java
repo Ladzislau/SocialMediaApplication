@@ -1,6 +1,6 @@
 package by.ladz.gusakov.SocialMedialApp.security;
 
-import by.ladz.gusakov.SocialMedialApp.exceptions.ErrorResponse;
+import by.ladz.gusakov.SocialMedialApp.exception.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

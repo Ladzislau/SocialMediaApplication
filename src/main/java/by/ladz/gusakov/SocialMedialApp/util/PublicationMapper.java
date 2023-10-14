@@ -1,8 +1,8 @@
 package by.ladz.gusakov.SocialMedialApp.util;
 
 import by.ladz.gusakov.SocialMedialApp.dto.PublicationDTO;
-import by.ladz.gusakov.SocialMedialApp.models.Publication;
-import by.ladz.gusakov.SocialMedialApp.exceptions.CantLoadImageException;
+import by.ladz.gusakov.SocialMedialApp.model.Publication;
+import by.ladz.gusakov.SocialMedialApp.exception.CantLoadImageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

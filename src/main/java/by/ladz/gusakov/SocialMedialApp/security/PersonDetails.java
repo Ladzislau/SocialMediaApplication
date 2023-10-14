@@ -1,6 +1,6 @@
 package by.ladz.gusakov.SocialMedialApp.security;
 
-import by.ladz.gusakov.SocialMedialApp.models.Person;
+import by.ladz.gusakov.SocialMedialApp.model.Person;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -1,8 +1,8 @@
 package by.ladz.gusakov.SocialMedialApp.util;
 
-import by.ladz.gusakov.SocialMedialApp.exceptions.FollowingException;
-import by.ladz.gusakov.SocialMedialApp.models.Following;
-import by.ladz.gusakov.SocialMedialApp.repositories.FollowingRepository;
+import by.ladz.gusakov.SocialMedialApp.exception.FollowingException;
+import by.ladz.gusakov.SocialMedialApp.model.Following;
+import by.ladz.gusakov.SocialMedialApp.repository.FollowingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

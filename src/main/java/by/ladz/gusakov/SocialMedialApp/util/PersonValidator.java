@@ -1,7 +1,7 @@
 package by.ladz.gusakov.SocialMedialApp.util;
 
-import by.ladz.gusakov.SocialMedialApp.models.Person;
-import by.ladz.gusakov.SocialMedialApp.services.PeopleService;
+import by.ladz.gusakov.SocialMedialApp.model.Person;
+import by.ladz.gusakov.SocialMedialApp.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

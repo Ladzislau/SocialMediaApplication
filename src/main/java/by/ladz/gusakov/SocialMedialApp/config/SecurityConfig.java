@@ -1,7 +1,7 @@
 package by.ladz.gusakov.SocialMedialApp.config;
 
 import by.ladz.gusakov.SocialMedialApp.security.CustomAuthenticationEntryPoint;
-import by.ladz.gusakov.SocialMedialApp.services.PersonDetailsService;
+import by.ladz.gusakov.SocialMedialApp.service.PersonDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
