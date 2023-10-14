@@ -1,4 +1,4 @@
-package by.ladz.gusakov.SocialMedialApp.security;
+package by.ladz.gusakov.SocialMedialApp.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
