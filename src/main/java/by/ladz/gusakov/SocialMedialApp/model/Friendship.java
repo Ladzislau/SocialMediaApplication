@@ -1,11 +1,17 @@
 package by.ladz.gusakov.SocialMedialApp.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "friendship")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Friendship {
 
     @Id
@@ -21,35 +27,8 @@ public class Friendship {
     @JoinColumn(name = "friend_id", referencedColumnName = "id")
     private Person friend;
 
-    public Friendship() {
-    }
-
     public Friendship(Person person, Person friend) {
         this.person = person;
-        this.friend = friend;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public Person getFriend() {
-        return friend;
-    }
-
-    public void setFriend(Person friend) {
         this.friend = friend;
     }
 

@@ -2,10 +2,14 @@ package by.ladz.gusakov.SocialMedialApp.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
 public class PublicationDTO {
 
     @NotEmpty(message = "Заголовок публикации не может быть пустым")
@@ -20,47 +24,4 @@ public class PublicationDTO {
     private Date createdAt;
 
     private List<String> publicationImages;
-
-    public PublicationDTO() {
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setPublicationImages(List<String> publicationImages) {
-        this.publicationImages = publicationImages;
-    }
-
-    public List<String> getPublicationImages() {
-        return publicationImages;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 }

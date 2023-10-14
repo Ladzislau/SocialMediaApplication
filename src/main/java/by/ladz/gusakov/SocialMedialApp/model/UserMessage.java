@@ -3,11 +3,15 @@ package by.ladz.gusakov.SocialMedialApp.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "message")
+@Getter
+@Setter
 public class UserMessage implements Comparable<UserMessage> {
 
     @Id
@@ -31,56 +35,6 @@ public class UserMessage implements Comparable<UserMessage> {
     @Column(name = "sent_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date sentTime;
-
-    public UserMessage() {
-    }
-
-    public UserMessage(Person sender, Person recipient, String content) {
-        this.sender = sender;
-        this.recipient = recipient;
-        this.content = content;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Person getSender() {
-        return sender;
-    }
-
-    public void setSender(Person sender) {
-        this.sender = sender;
-    }
-
-    public Person getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(Person recipient) {
-        this.recipient = recipient;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getSentTime() {
-        return sentTime;
-    }
-
-    public void setSentTime(Date sentTime) {
-        this.sentTime = sentTime;
-    }
-
 
     @Override
     public int compareTo(UserMessage o) {

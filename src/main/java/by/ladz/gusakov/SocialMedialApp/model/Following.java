@@ -1,11 +1,17 @@
 package by.ladz.gusakov.SocialMedialApp.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "following")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Following {
 
     @Id
@@ -29,44 +35,9 @@ public class Following {
         SENT, DECLINED, ACCEPTED
     }
 
-    public Following() {
-    }
-
     public Following(Person person, Person followee, Status status) {
         this.person = person;
         this.followee = followee;
-        this.status = status;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public Person getFollowee() {
-        return followee;
-    }
-
-    public void setFollowee(Person followee) {
-        this.followee = followee;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
         this.status = status;
     }
 

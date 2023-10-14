@@ -2,9 +2,15 @@ package by.ladz.gusakov.SocialMedialApp.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "image")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Image {
 
     @Id
@@ -20,36 +26,8 @@ public class Image {
     @JoinColumn(name = "publication_id", referencedColumnName = "id")
     private Publication publication;
 
-    public Image() {
-    }
-
     public Image(String pathToImage, Publication publication) {
         this.pathToImage = pathToImage;
-        this.publication = publication;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getPathToImage() {
-        return pathToImage;
-    }
-
-    public void setPathToImage(String pathToImage) {
-        this.pathToImage = pathToImage;
-    }
-
-    public Publication getPublication() {
-        return publication;
-    }
-
-    public void setPublication(Publication publication) {
         this.publication = publication;
     }
 }
