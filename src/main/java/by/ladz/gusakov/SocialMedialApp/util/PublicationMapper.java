@@ -13,11 +13,11 @@ import java.util.List;
 @Component
 public class PublicationMapper {
 
-    private final ImageUtils imageUtils;
+    private final ImageUtil imageUtil;
 
     @Autowired
-    public PublicationMapper(ImageUtils imageUtils) {
-        this.imageUtils = imageUtils;
+    public PublicationMapper(ImageUtil imageUtil) {
+        this.imageUtil = imageUtil;
     }
 
     public List<PublicationDTO> mapToPublicationDTOList(List<Publication> publications) throws CantLoadImageException {
@@ -32,7 +32,7 @@ public class PublicationMapper {
     public PublicationDTO mapToPublicationDTO(Publication publication) throws CantLoadImageException {
         try {
             PublicationDTO publicationDTO = new PublicationDTO();
-            List<String> base64images = imageUtils.loadImages(publication.getImages());
+            List<String> base64images = imageUtil.loadImages(publication.getImages());
             publicationDTO.setTitle(publication.getTitle());
             publicationDTO.setContent(publication.getContent());
             publicationDTO.setCreatedAt(publication.getCreatedAt());
