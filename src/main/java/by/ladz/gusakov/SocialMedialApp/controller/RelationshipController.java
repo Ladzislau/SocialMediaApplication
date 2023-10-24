@@ -32,7 +32,7 @@ public class RelationshipController {
     public ResponseEntity<Map<String, String>> follow(@RequestBody @Valid RelationshipDTO relationshipDTO, BindingResult bindingResult)
             throws PersonNotFoundException, PersonNotAuthenticatedException, FollowingException {
 
-        String errorMessage = ExceptionUtils.generateErrorMessage(bindingResult);
+        String errorMessage = ExceptionUtil.generateErrorMessage(bindingResult);
         if(errorMessage != null)
             throw new PersonNotFoundException(errorMessage);
 
@@ -50,7 +50,7 @@ public class RelationshipController {
     public ResponseEntity<Map<String, String>> unfollow(@RequestBody @Valid RelationshipDTO relationshipDTO, BindingResult bindingResult)
             throws PersonNotFoundException, FollowingException, PersonNotAuthenticatedException {
 
-        String errorMessage = ExceptionUtils.generateErrorMessage(bindingResult);
+        String errorMessage = ExceptionUtil.generateErrorMessage(bindingResult);
         if(errorMessage != null)
             throw new PersonNotFoundException(errorMessage);
 
@@ -68,7 +68,7 @@ public class RelationshipController {
     public ResponseEntity<Map<String, String>> acceptRequest(@RequestBody @Valid RelationshipDTO relationshipDTO, BindingResult bindingResult)
             throws PersonNotFoundException, FollowingException, PersonNotAuthenticatedException {
 
-        String errorMessage = ExceptionUtils.generateErrorMessage(bindingResult);
+        String errorMessage = ExceptionUtil.generateErrorMessage(bindingResult);
         if(errorMessage != null)
             throw new PersonNotFoundException(errorMessage);
 
@@ -86,7 +86,7 @@ public class RelationshipController {
     public ResponseEntity<Map<String, String>> declineRequest(@RequestBody @Valid RelationshipDTO relationshipDTO, BindingResult bindingResult)
             throws FollowingException, PersonNotAuthenticatedException, PersonNotFoundException {
 
-        String errorMessage = ExceptionUtils.generateErrorMessage(bindingResult);
+        String errorMessage = ExceptionUtil.generateErrorMessage(bindingResult);
         if(errorMessage != null)
             throw new PersonNotFoundException(errorMessage);
 
