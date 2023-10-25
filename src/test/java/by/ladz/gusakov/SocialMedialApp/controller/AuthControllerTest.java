@@ -100,11 +100,15 @@ class AuthControllerTest {
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$", Matchers.aMapWithSize(2)))
-                .andExpect(jsonPath("$.error", containsString(errorMessagePt1)))
-                .andExpect(jsonPath("$.error", containsString(errorMessagePt2)))
-                .andExpect(jsonPath("$.error", containsString(errorMessagePt3)))
-                .andExpect(jsonPath("$.error", hasLength(expectedLengthOfMessage)));
+                .andExpect(jsonPath("$", aMapWithSize(2)))
+                .andExpect(jsonPath("$.timestamp", notNullValue()))
+                .andExpect(jsonPath("$.error", allOf(
+                        containsString(usernameLengthError),
+                        containsString(invalidEmailError),
+                        containsString(passwordLengthError),
+                        not(containsString(emptyEmailError)),
+                        not(emailLengthError)
+                )));
     }
 
     @Test
