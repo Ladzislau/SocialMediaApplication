@@ -51,7 +51,7 @@ public class AuthController {
     @PostMapping("/registration")
     public ResponseEntity<Map<String, String>> performRegistration(@RequestBody @Valid PersonDTO personDTO,
                                                                    BindingResult bindingResult) throws PersonNotCreatedException {
-        Person person = convertToPerson(personDTO);
+        Person person = modelMapper.map(personDTO, Person.class);
         personValidator.validate(person, bindingResult);
         String errorMessage = ExceptionUtil.generateErrorMessage(bindingResult);
         if(errorMessage != null){
@@ -77,9 +77,4 @@ public class AuthController {
         String token = jwtUtil.generateToken(person.getUsername());
         return ResponseEntity.ok(Map.of("jwt-token", token));
     }
-
-    private Person convertToPerson(PersonDTO personDTO){
-        return modelMapper.map(personDTO, Person.class);
-    }
-
 }
