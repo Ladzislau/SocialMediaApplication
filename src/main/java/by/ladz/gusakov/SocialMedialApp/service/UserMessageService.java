@@ -51,11 +51,11 @@ public class UserMessageService {
     }
 
     @Transactional
-    public void sendMessage(UserMessage message) throws PersonNotAuthenticatedException, NotFriendException {
+    public void sendMessage(UserMessage message) throws PersonNotAuthenticatedException, FriendshipRequiredException {
         Person currentUser = peopleService.getCurrentUser();
 
-        if(!areFriends(currentUser, message.getRecipient()))
-            throw new NotFriendException("Вы не можете отправить сообщение пользователю "
+        if(areFriends(currentUser, message.getRecipient()))
+            throw new FriendshipRequiredException("Вы не можете отправить сообщение пользователю "
             + message.getRecipient().getUsername() + ", потому что не являетесь друзьями");
 
         message.setSender(currentUser);
