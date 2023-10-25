@@ -9,7 +9,6 @@ import by.ladz.gusakov.SocialMedialApp.service.RegistrationService;
 import by.ladz.gusakov.SocialMedialApp.util.JWTUtil;
 import by.ladz.gusakov.SocialMedialApp.util.PersonValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -130,21 +129,40 @@ class AuthControllerTest {
 
     @Test
     public void performLogin_invalidDTO_401ErrorMapReturned() throws Exception {
-        AuthenticationDTO authenticationDTO = new AuthenticationDTO("test_user", "invalidPassword");
+        AuthenticationDTO authenticationDtoBadCredentials = new AuthenticationDTO("test_user", "invalidPassword");
+        AuthenticationDTO authenticationDtoInvalidFields = new AuthenticationDTO("", "");
 
-        String requestBody = objectMapper.writeValueAsString(authenticationDTO);
+        String badCredentialsError = "Неправильное имя или пароль";
+        String emptyUsernameOrEmailError = "Необходимо указать имя пользователя или адрес электронной почты!";
+        String emptyPasswordError = "Необходимо указать пароль!";
+
+        String requestBodyBadCredentials = objectMapper.writeValueAsString(authenticationDtoBadCredentials);
+        String requestBodyInvalidDTO = objectMapper.writeValueAsString(authenticationDtoInvalidFields);
 
         UsernamePasswordAuthenticationToken authInputToken = new UsernamePasswordAuthenticationToken(
-                authenticationDTO.getUsernameOrEmail(), authenticationDTO.getPassword());
+                authenticationDtoBadCredentials.getUsernameOrEmail(), authenticationDtoBadCredentials.getPassword());
         when(authenticationProvider.authenticate(authInputToken)).thenThrow(new BadCredentialsException(""));
 
-        MockHttpServletRequestBuilder mockRequest = patch(LOGIN_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequestBadCredentials = patch(LOGIN_END_POINT_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(requestBody);
+                .content(requestBodyBadCredentials);
 
-        mockMvc.perform(mockRequest)
+        MockHttpServletRequestBuilder mockRequestInvalidDTO = patch(LOGIN_END_POINT_PATH)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(requestBodyInvalidDTO);
+
+        mockMvc.perform(mockRequestBadCredentials)
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message", is("Неправильное имя или пароль")));
+                .andExpect(jsonPath("$.error", is(badCredentialsError)));
+
+        mockMvc.perform(mockRequestInvalidDTO)
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.error", allOf(
+                        containsString(emptyUsernameOrEmailError),
+                        containsString(emptyPasswordError),
+                        not(containsString(badCredentialsError))
+                )));
     }
 }
