@@ -87,10 +87,11 @@ class AuthControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(personDTO);
 
-        String errorMessagePt1 = "username – Имя пользователя должно содержать от 1 до 20 символов";
-        String errorMessagePt2 = "email – Некорректный адрес электронной почты";
-        String errorMessagePt3 = "password – Пароль должен содержать от 6 до 20 символов";
-        int expectedLengthOfMessage = (errorMessagePt1 + errorMessagePt2 + errorMessagePt3 + "; ; ").length();
+        String usernameLengthError = "username – Имя пользователя должно содержать от 1 до 20 символов";
+        String invalidEmailError = "email – Некорректный адрес электронной почты";
+        String passwordLengthError = "password – Пароль должен содержать от 6 до 20 символов";
+        String emptyEmailError = "email – Необходимо указать адрес электронной почты";
+        String emailLengthError = "email – Длина адреса электронной почты не может превышать 256 символов";
 
         MockHttpServletRequestBuilder mockRequest = post(REGISTRATION_END_POINT_PATH)
                 .contentType(MediaType.APPLICATION_JSON)
