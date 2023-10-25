@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class PersonDTO {
 
-    @NotEmpty(message = "Необходимо указать имя пользователя")
     @Size(min = 1, max = 20, message = "Имя пользователя должно содержать от 1 до 20 символов")
     private String username;
 
