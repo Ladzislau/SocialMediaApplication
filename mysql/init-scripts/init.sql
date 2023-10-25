@@ -1,3 +1,5 @@
+create database social_media;
+
 create table person(
                        id int primary key auto_increment,
                        username varchar(20) unique not null,
