@@ -54,13 +54,12 @@ public class MessageController {
     public ResponseEntity<Map<String, String>> sendMessage(
             @RequestBody @Valid UserMessageDTO userMessageDTO,
             BindingResult bindingResult)
-            throws PersonNotAuthenticatedException, NotFriendException, PersonNotFoundException, MessageException {
+            throws PersonNotAuthenticatedException, FriendshipRequiredException, PersonNotFoundException, MessageException {
         String errorMessage = ExceptionUtil.generateErrorMessage(bindingResult);
         if(errorMessage != null){
             throw new MessageException(errorMessage);
         }
         UserMessage message = convertToUserMessage(userMessageDTO);
-
 
         userMessageService.sendMessage(message);
 
