@@ -31,7 +31,7 @@ paths:
                     type: string
                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyIGRldGFpbHMiLCJ1c2VybmFtZSI6InZvbHZvIiwiaWF0IjoxNjg1OTAyNzU1LCJpc3MiOiJzcHJpbmctcmVzdC1hcHAiLCJleHAiOjE2ODg0OTQ3NTV9.2Cp5hd_6oEGUZJlIVEs52F-rgs31F45DO772GYMxqmY
         '400':
-          description: Регистрация не удалась
+          description: Регистрация не удалась, переданы некорректные данные
           content:
             application/json:
               schema:
@@ -68,7 +68,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  error:
                     type: string
                     example: "Неправильное имя или пароль"
           
@@ -100,7 +100,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'            
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Пользователь не аутентифицирован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Попытка отправки сообщения пользователю, который не является другом
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Получатель не найден
           content:
@@ -111,7 +123,7 @@ paths:
   /messages/chat:
     get:
       summary: Получить чат с пользователем
-      description: Получение списка всех сообщей между текущим аутентифицированным пользователем и указанным пользователем
+      description: Получение списка всех сообщений между текущим аутентифицированным пользователем и указанным пользователем
       operationId: getChat
       tags:
         - Сообщения
@@ -578,7 +590,7 @@ components:
       properties:
         error:
           type: string
-          example: "Ошибка! Вы не можете ..."
+          example: "Ошибка! ..."
         timestamp:
           type: string
           format: date-time
