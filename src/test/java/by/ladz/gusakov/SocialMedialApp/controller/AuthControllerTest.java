@@ -107,7 +107,7 @@ class AuthControllerTest {
                         containsString(invalidEmailError),
                         containsString(passwordLengthError),
                         not(containsString(emptyEmailError)),
-                        not(emailLengthError)
+                        not(containsString(emailLengthError))
                 )));
     }
 
