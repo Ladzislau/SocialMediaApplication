@@ -31,7 +31,7 @@ paths:
                     type: string
                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyIGRldGFpbHMiLCJ1c2VybmFtZSI6InZvbHZvIiwiaWF0IjoxNjg1OTAyNzU1LCJpc3MiOiJzcHJpbmctcmVzdC1hcHAiLCJleHAiOjE2ODg0OTQ3NTV9.2Cp5hd_6oEGUZJlIVEs52F-rgs31F45DO772GYMxqmY
         '400':
-          description: Не удалось зарегистрироваться
+          description: Регистрация не удалась
           content:
             application/json:
               schema:
@@ -215,7 +215,7 @@ paths:
         - Публикации
       parameters:
         - name: imagesForPost
-          in: formData
+          in: query
           description: Изображения для публикации
           required: false
           schema:
@@ -225,7 +225,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PublicationDTOwi'
+              $ref: '#/components/schemas/PublicationDTOWithoutImages'
       responses:
         '201':
           description: Успешный ответ
@@ -482,7 +482,7 @@ components:
     PersonDTO:
       type: object
       properties:
-        name:
+        username:
           type: string
           example: your_username
         email:
@@ -494,7 +494,7 @@ components:
     AuthenticationDTO:
       type: object
       properties:
-        email:
+        usernameOrEmail:
           type: string
           example: email_or_username
         password:
@@ -520,7 +520,7 @@ components:
         recipientName:
           type: string
           example: username
-        message:
+        content:
           type: string
           example: hello
     MessageDTO:
@@ -544,7 +544,7 @@ components:
         author:
           type: string
           example: username
-        creationTime:
+        createdAt:
           type: object
           example: 2023-06-01T10:30:00Z
         publicationImages:
@@ -554,7 +554,7 @@ components:
             example:
             - data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH1ggDCwMADQ4NnwAAAFVJREFUGJWNkMEJADEIBEcbSDkXUnfSgnBVeZ8LSAjiwjyEQXSFEIcHGP9oAi+H0Bymgx9MhxbFdZE2a0s9kTZdw01ZhhYkABSwgmf1Z6r1SNyfFf4BZ+ZUExcNUQUAAAAASUVORK5CYII=
             - data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH1ggDCwMADQ4NnwAAAFVJREFUGJWNkMEJADEIBEcbSDkXUnfSgnBVeZ8LSAjiwjyEQXSFEIcHGP9oAi+H0Bymgx9MhxbFdZE2a0s9kTZdw01ZhhYkABSwgmf1Z6r1SNyfFf4BZ+ZUExcNUQUAAAAASUVORK5CYII=
-    PublicationDTOwi:
+    PublicationDTOWithoutImages:
       type: object
       properties:
         title:
@@ -583,7 +583,3 @@ components:
           type: string
           format: date-time
           example: "2023-06-05T19:56:11.631+00:00"
-
-
-    
- 
