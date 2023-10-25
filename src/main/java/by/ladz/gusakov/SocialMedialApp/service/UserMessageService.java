@@ -6,7 +6,7 @@ import by.ladz.gusakov.SocialMedialApp.model.Friendship;
 import by.ladz.gusakov.SocialMedialApp.model.Person;
 import by.ladz.gusakov.SocialMedialApp.model.UserMessage;
 import by.ladz.gusakov.SocialMedialApp.repository.UserMessageRepository;
-import by.ladz.gusakov.SocialMedialApp.exception.NotFriendException;
+import by.ladz.gusakov.SocialMedialApp.exception.FriendshipRequiredException;
 import by.ladz.gusakov.SocialMedialApp.exception.PersonNotAuthenticatedException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -68,7 +68,5 @@ public class UserMessageService {
         List<Friendship> friendships = friendRequestService.findFriendship(person1, person2);
         return !friendships.isEmpty();
     }
-
-
 
 }
