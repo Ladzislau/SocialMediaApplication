@@ -17,6 +17,7 @@ The Social Media RESTful Application is built using the following technologies:
 - Java JWT - Java JWT is used for JWT (JSON Web Token) implementation.
 - Hibernate Validator - Hibernate Validator is used for user data validation.
 - Swagger - Swagger was used for API documentation generation.
+- Lombok - Lombok is used to reduce boilerplate code by generating common methods and simplifying Java development.
 
 ## Features
 
@@ -37,8 +38,13 @@ The Social Media RESTful Application is built using the following technologies:
 
 To get started with My Project, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/Ladzislau/SocialMediaApplication.git`
+1. Clone the repository: `git clone https://github.com/Ladzislau/Library-Management-System.git`
 2. Install the necessary dependencies.
-3. Build and run the project.
-4. Explore the API documentation using the provided OpenAPI YAML file.
+
+   Next, rename the file [application.properties.origin](src/main/resources/application.properties.origin) to `application.properties` and configure it with the necessary settings for your application to work correctly.
+
+3. Run the [init.sql](mysql/init-scripts/init.sql) script to create the database. You can find this script in the [mysql/init-scripts](mysql/init-scripts) directory.
+
+4. Build and run the project.
+5. Explore the API documentation using the provided OpenAPI YAML file.
 
