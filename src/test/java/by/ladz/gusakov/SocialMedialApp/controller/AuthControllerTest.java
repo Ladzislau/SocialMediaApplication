@@ -83,7 +83,7 @@ class AuthControllerTest {
 
     @Test
     public void performRegistration_invalidDTO_400ErrorMapReturned() throws Exception {
-        PersonDTO personDTO = new PersonDTO("", "test", "12");
+        PersonDTO personDTO = new PersonDTO("", "test", "");
 
         String requestBody = objectMapper.writeValueAsString(personDTO);
 
