@@ -22,7 +22,6 @@ public class PersonDTO {
     @Size(max = 256, message = "Длина адреса электронной почты не может превышать 256 символов")
     private String email;
 
-    @NotEmpty(message = "Необходимо указать пароль")
     @Size(min = 6, max = 20, message = "Пароль должен содержать от 6 до 20 символов")
     private String password;
 }
