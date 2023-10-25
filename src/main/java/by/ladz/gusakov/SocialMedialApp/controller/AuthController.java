@@ -66,14 +66,14 @@ public class AuthController {
     @PatchMapping("/login")
     public ResponseEntity<Map<String, String>> performLogin(@RequestBody AuthenticationDTO authenticationDTO){
         UsernamePasswordAuthenticationToken authInputToken = new UsernamePasswordAuthenticationToken(
-                authenticationDTO.getUsername(), authenticationDTO.getPassword());
+                authenticationDTO.getUsernameOrEmail(), authenticationDTO.getPassword());
         try {
             authenticationProvider.authenticate(authInputToken);
         } catch (BadCredentialsException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("message","Неправильное имя или пароль"));
         }
-        Person person = peopleService.findByUsernameOrEmail(authenticationDTO.getUsername()).get();
+        Person person = peopleService.findByUsernameOrEmail(authenticationDTO.getUsernameOrEmail()).get();
         String token = jwtUtil.generateToken(person.getUsername());
         return ResponseEntity.ok(Map.of("jwt-token", token));
     }
