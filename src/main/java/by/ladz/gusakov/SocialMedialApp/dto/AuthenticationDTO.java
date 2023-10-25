@@ -9,7 +9,7 @@ import lombok.Setter;
 public class AuthenticationDTO {
 
     @NotEmpty(message = "Необходимо указать имя пользователя или адрес электронной почты!")
-    private String username;
+    private String usernameOrEmail;
 
     @NotEmpty(message = "Необходимо указать пароль!")
     private String password;
