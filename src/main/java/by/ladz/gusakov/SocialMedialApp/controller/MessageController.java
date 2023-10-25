@@ -9,7 +9,6 @@ import by.ladz.gusakov.SocialMedialApp.service.UserMessageService;
 import by.ladz.gusakov.SocialMedialApp.service.PeopleService;
 import by.ladz.gusakov.SocialMedialApp.util.ExceptionUtil;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -26,14 +25,10 @@ public class MessageController {
 
     private final PeopleService peopleService;
 
-    private final ModelMapper modelMapper;
-
-
     @Autowired
-    public MessageController(UserMessageService userMessageService, PeopleService peopleService, ModelMapper modelMapper) {
+    public MessageController(UserMessageService userMessageService, PeopleService peopleService) {
         this.userMessageService = userMessageService;
         this.peopleService = peopleService;
-        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/chat")
@@ -67,7 +62,8 @@ public class MessageController {
     }
 
     public UserMessage convertToUserMessage(UserMessageDTO messageDTO) throws PersonNotFoundException {
-        UserMessage message = modelMapper.map(messageDTO, UserMessage.class);
+        UserMessage message = new UserMessage();
+        message.setContent(messageDTO.getContent());
         Optional<Person> recipient = peopleService.findByUsername(messageDTO.getRecipientName());
         if(recipient.isEmpty()){
             throw new PersonNotFoundException("Невозможно отправить сообщение! Пользователя "
