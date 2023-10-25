@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
                 e instanceof IncorrectPublicationException) {
             return HttpStatus.BAD_REQUEST;
         } else if (e instanceof UnauthorizedPublicationModificationException ||
-                e instanceof NotFriendException) {
+                e instanceof FriendshipRequiredException) {
             return HttpStatus.FORBIDDEN;
         } else if (e instanceof FollowingException) {
             return HttpStatus.CONFLICT;
