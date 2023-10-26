@@ -28,7 +28,7 @@ public class UserMessageService {
         this.peopleService = peopleService;
     }
 
-    public Chat getChatWithPerson(Person person) throws PersonNotAuthenticatedException, ChatNotFoundedException {
+    public Chat getChatWithPerson(Person person) throws PersonNotAuthenticatedException, ChatNotFoundException {
         Person currentUser = peopleService.getCurrentUser();
         Chat chat = new Chat(currentUser.getUsername(), person.getUsername());
 
