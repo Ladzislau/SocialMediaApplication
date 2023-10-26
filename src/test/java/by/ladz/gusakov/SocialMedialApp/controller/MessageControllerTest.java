@@ -36,9 +36,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class MessageControllerTest {
 
-    private final String SEND_MESSAGE_END_POINT_PATH = "/api/v1/messages";
+    private final String SEND_MESSAGE_ENDPOINT = "/api/v1/messages";
 
-    private final String GET_CHAT_END_POINT_PATH = "/api/v1/messages/chat";
+    private final String GET_CHAT_ENDPOINT = "/api/v1/messages/chat";
 
     @Autowired
     private MockMvc mockMvc;
@@ -62,7 +62,7 @@ class MessageControllerTest {
         Person recipient = new Person();
         when(peopleService.findByUsername(messageDTO.getRecipientName())).thenReturn(Optional.of(recipient));
 
-        MockHttpServletRequestBuilder mockRequest = post(SEND_MESSAGE_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = post(SEND_MESSAGE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBody);
@@ -90,12 +90,12 @@ class MessageControllerTest {
         String emptyContentError = "content – Содержание сообщения не может быть пустым";
         String contentLengthError = "content – Максимальная длина сообщения – 1024 символа";
 
-        MockHttpServletRequestBuilder mockRequestEmptyMessageContentAndRecipientName = post(SEND_MESSAGE_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequestEmptyMessageContentAndRecipientName = post(SEND_MESSAGE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBody1);
 
-        MockHttpServletRequestBuilder mockRequestLargeMessageContentAndRecipientName = post(SEND_MESSAGE_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequestLargeMessageContentAndRecipientName = post(SEND_MESSAGE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBody2);
@@ -127,7 +127,7 @@ class MessageControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(messageDTO);
 
-        MockHttpServletRequestBuilder mockRequest = post(SEND_MESSAGE_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = post(SEND_MESSAGE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBody);
@@ -152,7 +152,7 @@ class MessageControllerTest {
         doThrow(new FriendshipRequiredException(expectedErrorMessage))
                 .when(userMessageService).sendMessage(Mockito.any(UserMessage.class));
 
-        MockHttpServletRequestBuilder mockRequest = post(SEND_MESSAGE_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = post(SEND_MESSAGE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBody);
@@ -173,7 +173,7 @@ class MessageControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(messageDTO);
 
-        MockHttpServletRequestBuilder mockRequest = post(SEND_MESSAGE_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = post(SEND_MESSAGE_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBody);
@@ -199,7 +199,7 @@ class MessageControllerTest {
         when(peopleService.findByUsername(secondChatMemberUsername)).thenReturn(Optional.of(expectedPerson));
         when(userMessageService.getChatWithPerson(expectedPerson)).thenReturn(expectedChat);
 
-        MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .param("withUser", secondChatMemberUsername);
@@ -216,7 +216,7 @@ class MessageControllerTest {
     public void getChat_unauthenticated_401ErrorMapReturned() throws Exception {
         String secondChatMemberUsername = "user_2";
 
-        MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .param("withUser", secondChatMemberUsername);
@@ -235,7 +235,7 @@ class MessageControllerTest {
 
         String invalidUsernameError = "Невозможно открыть чат! Пользователя " + secondChatMemberUsername + " не существует";
 
-        MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .param("withUser", secondChatMemberUsername);
@@ -258,7 +258,7 @@ class MessageControllerTest {
         when(peopleService.findByUsername(secondChatMemberUsername)).thenReturn(Optional.of(expectedPerson));
         when(userMessageService.getChatWithPerson(expectedPerson)).thenThrow(new ChatNotFoundException(chatNotFoundError));
 
-        MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .param("withUser", secondChatMemberUsername);

@@ -34,8 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AuthControllerTest {
 
-    private final String REGISTRATION_END_POINT_PATH = "/api/v1/auth/registration";
-    private final String LOGIN_END_POINT_PATH = "/api/v1/auth/login";
+    private final String REGISTRATION_ENDPOINT = "/api/v1/auth/registration";
+    private final String LOGIN_ENDPOINT = "/api/v1/auth/login";
 
     @Autowired
     private MockMvc mockMvc;
@@ -71,7 +71,7 @@ class AuthControllerTest {
 
         String requestBody = objectMapper.writeValueAsString(personDTO);
 
-        MockHttpServletRequestBuilder mockRequest = post(REGISTRATION_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = post(REGISTRATION_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBody);
@@ -93,7 +93,7 @@ class AuthControllerTest {
         String emptyEmailError = "email – Необходимо указать адрес электронной почты";
         String emailLengthError = "email – Длина адреса электронной почты не может превышать 256 символов";
 
-        MockHttpServletRequestBuilder mockRequest = post(REGISTRATION_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = post(REGISTRATION_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBody);
@@ -122,7 +122,7 @@ class AuthControllerTest {
         when(peopleService.findByUsernameOrEmail(authenticationDTO.getUsernameOrEmail())).thenReturn(Optional.of(person));
         when(jwtUtil.generateToken(person.getUsername())).thenReturn(expectedToken);
 
-        MockHttpServletRequestBuilder mockRequest = patch(LOGIN_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequest = patch(LOGIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBody);
@@ -148,12 +148,12 @@ class AuthControllerTest {
                 authenticationDtoBadCredentials.getUsernameOrEmail(), authenticationDtoBadCredentials.getPassword());
         when(authenticationProvider.authenticate(authInputToken)).thenThrow(new BadCredentialsException(""));
 
-        MockHttpServletRequestBuilder mockRequestBadCredentials = patch(LOGIN_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequestBadCredentials = patch(LOGIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBodyBadCredentials);
 
-        MockHttpServletRequestBuilder mockRequestInvalidDTO = patch(LOGIN_END_POINT_PATH)
+        MockHttpServletRequestBuilder mockRequestInvalidDTO = patch(LOGIN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(requestBodyInvalidDTO);
