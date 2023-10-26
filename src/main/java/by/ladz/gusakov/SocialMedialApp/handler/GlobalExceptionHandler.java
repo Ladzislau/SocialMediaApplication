@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
             return HttpStatus.UNAUTHORIZED;
         } else if (e instanceof CantLoadImageException ||
                 e instanceof PersonNotFoundException ||
+                e instanceof ChatNotFoundException ||
                 e instanceof PublicationNotFoundedException) {
             return HttpStatus.NOT_FOUND;
         } else if (e instanceof PersonNotCreatedException ||
