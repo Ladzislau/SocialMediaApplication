@@ -1,6 +1,6 @@
 package by.ladz.gusakov.SocialMedialApp.service;
 
-import by.ladz.gusakov.SocialMedialApp.exception.ChatNotFoundedException;
+import by.ladz.gusakov.SocialMedialApp.exception.ChatNotFoundException;
 import by.ladz.gusakov.SocialMedialApp.model.Chat;
 import by.ladz.gusakov.SocialMedialApp.model.Friendship;
 import by.ladz.gusakov.SocialMedialApp.model.Person;
@@ -35,7 +35,7 @@ public class UserMessageService {
         List<UserMessage> messagesFromCurrentUser = userMessageRepository.findBySenderAndRecipient(currentUser, person);
         List<UserMessage> messages = userMessageRepository.findBySenderAndRecipient(person, currentUser);
         if(messages.isEmpty() && messagesFromCurrentUser.isEmpty()){
-            throw new ChatNotFoundedException("Чат с пользователем " + person.getUsername() + " не найден!" +
+            throw new ChatNotFoundException("Чат с пользователем " + person.getUsername() + " не найден!" +
                     " Вы не отправили ему ни одного сообщения");
         }
         messages.addAll(messagesFromCurrentUser);
