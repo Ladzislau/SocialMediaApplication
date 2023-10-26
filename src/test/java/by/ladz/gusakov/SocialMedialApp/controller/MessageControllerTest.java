@@ -200,7 +200,6 @@ class MessageControllerTest {
         when(userMessageService.getChatWithPerson(expectedPerson)).thenReturn(expectedChat);
 
         MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .param("withUser", secondChatMemberUsername);
 
@@ -217,7 +216,6 @@ class MessageControllerTest {
         String secondChatMemberUsername = "user_2";
 
         MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .param("withUser", secondChatMemberUsername);
 
@@ -236,7 +234,6 @@ class MessageControllerTest {
         String invalidUsernameError = "Невозможно открыть чат! Пользователя " + secondChatMemberUsername + " не существует";
 
         MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .param("withUser", secondChatMemberUsername);
 
@@ -259,7 +256,6 @@ class MessageControllerTest {
         when(userMessageService.getChatWithPerson(expectedPerson)).thenThrow(new ChatNotFoundException(chatNotFoundError));
 
         MockHttpServletRequestBuilder mockRequest = get(GET_CHAT_ENDPOINT)
-                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .param("withUser", secondChatMemberUsername);
 
