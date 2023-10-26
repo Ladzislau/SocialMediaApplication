@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface PublicationRepository extends JpaRepository<Publication, Integer> {
-    List<Publication> findPublicationsByCreator(Person creator);
+    List<Publication> findPublicationsByAuthor(Person author);
 }
