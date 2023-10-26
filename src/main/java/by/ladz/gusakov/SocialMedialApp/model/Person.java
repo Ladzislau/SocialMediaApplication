@@ -39,7 +39,7 @@ public class Person {
     @NotEmpty(message = "Необходимо указать пароль!")
     private String password;
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "author")
     @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
     private List<Publication> publications;
 

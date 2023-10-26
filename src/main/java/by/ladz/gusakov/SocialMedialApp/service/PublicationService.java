@@ -50,7 +50,7 @@ public class PublicationService {
             List<Image> images = imageUtil.saveImages(imagesToSave, publication);
             publication.setImages(images);
         }
-        publication.setCreator(creator);
+        publication.setAuthor(creator);
         publication.setCreatedAt(new Date());
 
         publicationRepository.save(publication);
@@ -66,7 +66,7 @@ public class PublicationService {
 
         updatedPublication.setImages(oldPublication.getImages());
         updatedPublication.setCreatedAt(oldPublication.getCreatedAt());
-        updatedPublication.setCreator(oldPublication.getCreator());
+        updatedPublication.setAuthor(oldPublication.getAuthor());
         updatedPublication.setId(id);
 
 
@@ -96,7 +96,7 @@ public class PublicationService {
             throw new PublicationNotFoundedException("Публикация не найдена!");
         }
         Publication publication = publicationOpt.get();
-        if (!publication.getCreator().equals(currentUser)) {
+        if (!publication.getAuthor().equals(currentUser)) {
             throw new UnauthorizedPublicationModificationException("Невозможно произвести операцию с публикацией! " +
                     "Вы не являетесь её создателем");
         }

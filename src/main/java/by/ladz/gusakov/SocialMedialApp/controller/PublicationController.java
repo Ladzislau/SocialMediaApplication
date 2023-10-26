@@ -52,14 +52,14 @@ public class PublicationController {
             @RequestParam("username") String username)
             throws PersonNotFoundException, CantLoadImageException {
 
-        Optional<Person> creatorOptional = peopleService.findByUsername(username);
+        Optional<Person> authorOptional = peopleService.findByUsername(username);
 
-        if (creatorOptional.isEmpty()) {
+        if (authorOptional.isEmpty()) {
             throw new PersonNotFoundException("Невозможно загрузить публикации! Пользователя "
                     + username + " не существует");
         }
 
-        Person creator = creatorOptional.get();
+        Person creator = authorOptional.get();
         List<Publication> publications = publicationService.getAllPublicationsByCreator(creator);
         List<PublicationDTO> publicationDTOS = publicationMapper.mapToPublicationDTOList(publications);
 

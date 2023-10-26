@@ -37,7 +37,7 @@ public class Publication implements Comparable<Publication> {
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
-    private Person creator;
+    private Person author;
 
     @OneToMany(mappedBy = "publication")
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE,

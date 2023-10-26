@@ -37,7 +37,7 @@ public class PublicationMapper {
             publicationDTO.setContent(publication.getContent());
             publicationDTO.setCreatedAt(publication.getCreatedAt());
             publicationDTO.setPublicationImages(base64images);
-            publicationDTO.setAuthor(publication.getCreator().getUsername());
+            publicationDTO.setAuthor(publication.getAuthor().getUsername());
             return publicationDTO;
         } catch (IOException e) {
             throw new CantLoadImageException("Произошла ошибка при загрузке изображения(-ий)");
