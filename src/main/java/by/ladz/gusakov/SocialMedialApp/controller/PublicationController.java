@@ -59,8 +59,8 @@ public class PublicationController {
                     + username + " не существует");
         }
 
-        Person creator = authorOptional.get();
-        List<Publication> publications = publicationService.getAllPublicationsByCreator(creator);
+        Person author = authorOptional.get();
+        List<Publication> publications = publicationService.getAllPublicationsByAuthor(author);
         List<PublicationDTO> publicationDTOS = publicationMapper.mapToPublicationDTOList(publications);
 
         return ResponseEntity.ok(publicationDTOS);

@@ -38,7 +38,7 @@ public class PublicationService {
         return publicationRepository.findById(id);
     }
 
-    public List<Publication> getAllPublicationsByCreator(Person author) {
+    public List<Publication> getAllPublicationsByAuthor(Person author) {
         return publicationRepository.findPublicationsByAuthor(author);
     }
 
