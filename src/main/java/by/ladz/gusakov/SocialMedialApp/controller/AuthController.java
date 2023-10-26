@@ -64,14 +64,21 @@ public class AuthController {
     }
 
     @PatchMapping("/login")
-    public ResponseEntity<Map<String, String>> performLogin(@RequestBody AuthenticationDTO authenticationDTO){
+    public ResponseEntity<Map<String, String>> performLogin(@RequestBody @Valid AuthenticationDTO authenticationDTO,
+                                                            BindingResult bindingResult) {
+        String errorMessage = ExceptionUtil.generateErrorMessage(bindingResult);
+        if(errorMessage != null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", errorMessage));
+        }
+
         UsernamePasswordAuthenticationToken authInputToken = new UsernamePasswordAuthenticationToken(
                 authenticationDTO.getUsernameOrEmail(), authenticationDTO.getPassword());
         try {
             authenticationProvider.authenticate(authInputToken);
         } catch (BadCredentialsException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("message","Неправильное имя или пароль"));
+                    .body(Map.of("error","Неправильное имя или пароль"));
         }
         Person person = peopleService.findByUsernameOrEmail(authenticationDTO.getUsernameOrEmail()).get();
         String token = jwtUtil.generateToken(person.getUsername());
