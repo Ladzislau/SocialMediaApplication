@@ -13,8 +13,7 @@ import lombok.Setter;
 @Setter
 public class UserMessageDTO {
 
-    @NotEmpty(message = "Вы должны ввести имя получателя")
-    @Size(min = 1, max = 20, message = "Введите корректное имя получателя")
+    @Size(min = 1, max = 20, message = "Некорректное имя получателя")
     private String recipientName;
 
     @NotEmpty(message = "Содержание сообщения не может быть пустым")
