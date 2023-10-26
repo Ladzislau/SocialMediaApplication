@@ -33,7 +33,7 @@ public class MessageController {
 
     @GetMapping("/chat")
     public ResponseEntity<Chat> getChat(@RequestParam("withUser") String username)
-            throws PersonNotFoundException, PersonNotAuthenticatedException, ChatNotFoundedException {
+            throws PersonNotFoundException, PersonNotAuthenticatedException, ChatNotFoundException {
 
         Optional<Person> person = peopleService.findByUsername(username);
 
